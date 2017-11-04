@@ -1,0 +1,145 @@
+{
+  "contract_name": "CopaCoin",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "totalSupply",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "spend",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_to",
+          "type": "address"
+        },
+        {
+          "name": "_amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "mint",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_owner",
+          "type": "address"
+        }
+      ],
+      "name": "balanceOf",
+      "outputs": [
+        {
+          "name": "balance",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_to",
+          "type": "address"
+        },
+        {
+          "name": "_value",
+          "type": "uint256"
+        }
+      ],
+      "name": "transfer",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_to",
+          "type": "address"
+        }
+      ],
+      "name": "mintOne",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "Transfer",
+      "type": "event"
+    }
+  ],
+  "unlinked_binary": "0x60606040525b60018054600160a060020a03191633600160a060020a03161790555b5b61034a806100316000396000f300606060405236156100805763ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166318160ddd81146100855780631dbf3bc7146100aa57806340c10f19146100d457806370a08231146100f85780638da5cb5b14610129578063a9059cbb14610158578063fa695a971461018e575b600080fd5b341561009057600080fd5b6100986101af565b60405190815260200160405180910390f35b34156100b557600080fd5b6100c06004356101b5565b604051901515815260200160405180910390f35b34156100df57600080fd5b6100f6600160a060020a03600435166024356101d6565b005b341561010357600080fd5b610098600160a060020a036004351661021a565b60405190815260200160405180910390f35b341561013457600080fd5b61013c610239565b604051600160a060020a03909116815260200160405180910390f35b341561016357600080fd5b6100c0600160a060020a0360043516602435610248565b604051901515815260200160405180910390f35b341561019957600080fd5b6100f6600160a060020a03600435166102f3565b005b60005481565b6001546000906101ce90600160a060020a031683610248565b90505b919050565b60015433600160a060020a039081169116146101f157600080fd5b6000805482018155600160a060020a03831681526002602052604090208054820190555b5b5050565b600160a060020a0381166000908152600260205260409020545b919050565b600154600160a060020a031681565b6000600160a060020a038316151561025f57600080fd5b600160a060020a03331660009081526002602052604090205482111561028457600080fd5b600160a060020a033381166000818152600260205260408082208054879003905592861680825290839020805486019055917fddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef9085905190815260200160405180910390a35060015b92915050565b60015433600160a060020a0390811691161461030e57600080fd5b6103198160016101d6565b5b5b505600a165627a7a72305820283f6cb6e6b83c30846b86338c97ac6c6f39be67a955de8d696f69147f76b7430029",
+  "networks": {},
+  "schema_version": "0.0.5",
+  "updated_at": 1509811182494
+}
