@@ -6,7 +6,7 @@ var Ballot = artifacts.require("RecuperarClase");
 
 module.exports = function(deployer) {
   deployer.deploy(ERC20Basic);
-  //deployer.link(ERC20Basic, Ownable);
+  deployer.link(ERC20Basic, Ownable);
   deployer.deploy(Ownable);
   deployer.deploy(CopaCoin);
   deployer.deploy(Utils);
