@@ -13,10 +13,19 @@ contract RecuperarClase is Ownable {
         uint8 votesCount;
     }
     Proposal[] public proposals;
+    mapping (address => bool) voters;
     CopaCoin copaCoinContract;
 
     function RecuperarClase() public {
         copaCoinContract = new CopaCoin();
+    }
+
+    function getProposals() public constant returns (bytes32[]) {
+      bytes32[] memory strings = new bytes32[](proposals.length);
+      for (uint i = 0; i < proposals.length; i++) {
+        strings[i] = proposals[i].name;
+      }
+      return strings;
     }
 
     modifier proposalNotExists(bytes32 _proposal) {
@@ -68,9 +77,15 @@ contract RecuperarClase is Ownable {
         _;
     }
 
-    function voteProposal(uint256 _index) public {
-        //require(copaCoinContract.spend(1));
-        proposals[_index].votesCount = proposals[_index].votesCount + 1;
+    function voteProposals(uint256[] _indexes) public {
+        require(voters[msg.sender] == false);
+        require(copaCoinContract.balanceOf(msg.sender) > 0);
+        require(copaCoinContract.spend(1));
+        for (uint i = 0; i < _indexes.length; i++) {
+          uint index = _indexes[i];
+          proposals[index].votesCount = proposals[index].votesCount + 1;
+        }
+        voters[msg.sender] = true;
     }
 
 }
