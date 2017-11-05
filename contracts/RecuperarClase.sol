@@ -18,6 +18,8 @@ contract RecuperarClase is Ownable {
 
     function RecuperarClase() public {
         copaCoinContract = new CopaCoin();
+        //RecuperarClase.addProposal("Martes 7");
+        //RecuperarClase.addProposal("Viernes 10");
     }
 
     function getProposals() public constant returns (bytes32[]) {
@@ -79,8 +81,8 @@ contract RecuperarClase is Ownable {
 
     function voteProposals(uint256[] _indexes) public {
         require(voters[msg.sender] == false);
-        require(copaCoinContract.balanceOf(msg.sender) > 0);
-        require(copaCoinContract.spend(1));
+        //require(copaCoinContract.balanceOf(msg.sender) > 0);
+        //require(copaCoinContract.spend(1));
         for (uint i = 0; i < _indexes.length; i++) {
           uint index = _indexes[i];
           proposals[index].votesCount = proposals[index].votesCount + 1;
