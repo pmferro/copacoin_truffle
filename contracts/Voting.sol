@@ -16,15 +16,10 @@ contract Voting is Ownable {
     mapping (address => bool) voters;
     ClassCoin coinContract;
 
-<<<<<<< HEAD:contracts/RecuperarClase.sol
     function RecuperarClase() public {
         copaCoinContract = new CopaCoin();
         //RecuperarClase.addProposal("Martes 7");
         //RecuperarClase.addProposal("Viernes 10");
-=======
-    function Voting() public {
-        coinContract = new ClassCoin();
->>>>>>> cc7c3c25ea3d1bca0524af24a86ad6d825adf5ae:contracts/Voting.sol
     }
 
     function getProposals() public constant returns (bytes32[]) {
