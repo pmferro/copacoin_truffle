@@ -75,7 +75,7 @@ export default class App extends Component {
 
     try {
       const proposalsInBytes32 = await votingInstance.getProposals.call(defaultAccount)
-      const proposals = proposalsInBytes32.map((proposal) => web3.toAscii(proposal))
+      const proposals = proposalsInBytes32.map((proposal) => web3.toAscii(proposal).replace(/\u0000/g, ''))
       this.setState({
         ...this.state,
         proposals,
@@ -94,7 +94,7 @@ export default class App extends Component {
       } else {
         console.log(`Result ${JSON.stringify(result.args)}`)
         const proposalInBytes32 = result.args.proposal
-        const proposal = web3.toAscii(proposalInBytes32)
+        const proposal = web3.toString(proposalInBytes32)
         this.setState({...this.state, proposals: [...this.state.proposals, proposal]})
         this.log(`New proposal added: ${proposal}`)
       }
