@@ -1,10 +1,10 @@
 pragma solidity ^0.4.4;
 
 import "../node_modules/zeppelin-solidity/contracts/ownership/Ownable.sol";
-import "./CopaCoin.sol";
+import "./ClassCoin.sol";
 import "./Utils.sol";
 
-contract RecuperarClase is Ownable {
+contract Voting is Ownable {
 
     using Utils for Utils;
 
@@ -14,10 +14,10 @@ contract RecuperarClase is Ownable {
     }
     Proposal[] public proposals;
     mapping (address => bool) voters;
-    CopaCoin copaCoinContract;
+    ClassCoin coinContract;
 
-    function RecuperarClase() public {
-        copaCoinContract = new CopaCoin();
+    function Voting() public {
+        coinContract = new ClassCoin();
     }
 
     function getProposals() public constant returns (bytes32[]) {
@@ -32,15 +32,15 @@ contract RecuperarClase is Ownable {
         for (uint256 i = 0; i < proposals.length ; i++) {
             require(_proposal != proposals[i].name);
         }
-
-        //    Este guion bajo se reemplaza por el cuerpo de la funcion
-        //    que esta aplicando el modifier
-
         _;
     }
 
     function addProposal(bytes32 _proposal) public onlyOwner proposalNotExists(_proposal) {
         proposals.push(Proposal({name: _proposal, votesCount: 0}));
+    }
+
+    function addVoter(address _voter) public onlyOwner {
+      coinContract.mintOne(_voter);
     }
 
     function bytes32ToString(bytes32 x) public returns (string) {
@@ -72,20 +72,24 @@ contract RecuperarClase is Ownable {
         return proposals.length;
     }
 
-    modifier hasCoins {
-        require(copaCoinContract.balanceOf(msg.sender) > 0);
-        _;
+    // Helper function, to interact from Truffle
+    function balanceOf(address _voter) public constant returns (uint) {
+      return coinContract.balanceOf(_voter);
     }
 
-    function voteProposals(uint256[] _indexes) public {
-        require(voters[msg.sender] == false);
-        require(copaCoinContract.balanceOf(msg.sender) > 0);
-        require(copaCoinContract.spend(1));
+    function updateProposal(uint _index) public {
+        proposals[_index].votesCount = proposals[_index].votesCount + 1;
+    }
+
+    function voteProposals(address _voter, uint256[] _indexes) public {
+        require(voters[_voter] == false);
+        require(coinContract.balanceOf(_voter) > 0);
+        require(coinContract.spend(1));
         for (uint i = 0; i < _indexes.length; i++) {
-          uint index = _indexes[i];
-          proposals[index].votesCount = proposals[index].votesCount + 1;
+            uint index = _indexes[i];
+            updateProposal(index);
         }
-        voters[msg.sender] = true;
+        voters[_voter] = true;
     }
 
 }
