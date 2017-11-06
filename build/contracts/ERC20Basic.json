@@ -80,5 +80,9 @@
   "unlinked_binary": "0x",
   "networks": {},
   "schema_version": "0.0.5",
+<<<<<<< HEAD
   "updated_at": 1509917009160
+=======
+  "updated_at": 1509927163347
+>>>>>>> cc7c3c25ea3d1bca0524af24a86ad6d825adf5ae
 }

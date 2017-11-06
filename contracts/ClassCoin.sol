@@ -3,7 +3,7 @@ pragma solidity ^0.4.4;
 import "../node_modules/zeppelin-solidity/contracts/token/ERC20Basic.sol";
 import "../node_modules/zeppelin-solidity/contracts/ownership/Ownable.sol";
 
-contract CopaCoin is ERC20Basic, Ownable {
+contract ClassCoin is ERC20Basic, Ownable {
     mapping(address => uint256) balances;
 
     function mint(address _to, uint256 _amount) public onlyOwner {
@@ -25,7 +25,7 @@ contract CopaCoin is ERC20Basic, Ownable {
         return true;
     }
 
-    function spend(uint256 _amount) public returns(bool) {
+    function spend(uint256 _amount) public returns (bool) {
         return transfer(owner, _amount);
     }
 

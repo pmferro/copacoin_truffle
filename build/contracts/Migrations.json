@@ -70,6 +70,7 @@
     "1509846405307": {
       "events": {},
       "links": {},
+<<<<<<< HEAD
       "address": "0x5d1e33f68b0fe7718c70971ca0b015bbd2df3ace",
       "updated_at": 1509848096645
     },
@@ -82,4 +83,24 @@
   },
   "schema_version": "0.0.5",
   "updated_at": 1509912549433
+=======
+      "address": "0x894703244a0d405c930190a76f82dabf2c1f97e5",
+      "updated_at": 1509923256451
+    },
+    "1509923291259": {
+      "events": {},
+      "links": {},
+      "address": "0x34f062d7f1f72a827f94bcc312400c54965765b3",
+      "updated_at": 1509927169934
+    },
+    "1509927199673": {
+      "events": {},
+      "links": {},
+      "address": "0x12f12220bbf6bffc50019d3358260516b21b473f",
+      "updated_at": 1509927309879
+    }
+  },
+  "schema_version": "0.0.5",
+  "updated_at": 1509927309879
+>>>>>>> cc7c3c25ea3d1bca0524af24a86ad6d825adf5ae
 }

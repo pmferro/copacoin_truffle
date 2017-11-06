@@ -53,6 +53,7 @@
     "1509846405307": {
       "events": {},
       "links": {},
+<<<<<<< HEAD
       "address": "0x6419a22be3f27856283b5836f138f0ba9fefdf48",
       "updated_at": 1509848096632
     },
@@ -65,4 +66,24 @@
   },
   "schema_version": "0.0.5",
   "updated_at": 1509917009160
+=======
+      "address": "0xf6fc3a3a79952386a2d4e66eec5dbf8826916582",
+      "updated_at": 1509923256445
+    },
+    "1509923291259": {
+      "events": {},
+      "links": {},
+      "address": "0xedaf4261033dbc9d650ba47deff3637731096bf6",
+      "updated_at": 1509927169926
+    },
+    "1509927199673": {
+      "events": {},
+      "links": {},
+      "address": "0x07c0a3d3562698ba7b92a0a8a32bd09eea6cb4f8",
+      "updated_at": 1509927309872
+    }
+  },
+  "schema_version": "0.0.5",
+  "updated_at": 1509927309872
+>>>>>>> cc7c3c25ea3d1bca0524af24a86ad6d825adf5ae
 }
