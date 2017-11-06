@@ -1,92 +1,144 @@
+// Libraries
 import React, { Component } from 'react'
-import copaCoinContract from '../build/contracts/CopaCoin.json'
+import Contract from 'truffle-contract'
+
+// Contract Abis
+import Voting from '../build/contracts/Voting.json'
+
+// Utils
 import getWeb3 from './utils/getWeb3'
+import promisify from './utils/promisify'
 
-import './css/oswald.css'
-import './css/open-sans.css'
-import './css/pure-min.css'
-import './App.css'
+// Components
+import AddProposalForm from './components/AddProposalForm'
+import Header from './components/Header'
+import LogsList from './components/LogsList'
+import ProposalsList from './components/ProposalsList'
 
-class App extends Component {
+const styles = {
+  main: {
+    'maxWidth': '80%',
+    'margin': '0 auto',
+  },
+}
+
+export default class App extends Component {
   constructor(props) {
     super(props)
 
+    // Set default state
     this.state = {
-      storageValue: 0,
-      web3: null
+      proposals: [],
+      logs: [],
+      defaultAccount: undefined,
+      votingInstance: undefined,
+      errorMessage: undefined,
+      web3: undefined,
     }
   }
 
   componentWillMount() {
-    // Get network provider and web3 instance.
-    // See utils/getWeb3 for more info.
-
-    getWeb3
-    .then(results => {
-      this.setState({
-        web3: results.web3
+    this.initialize()
+      .then(() => { 
+        this.watchNewProposals() 
+        this.watchNewVotes()
       })
+  }
 
-      // Instantiate contract once web3 provided.
-      this.instantiateContract()
+  async initialize() {
+    const { web3 } = await getWeb3
+
+    // Create voting entity from contract abi
+    const voting = Contract(Voting)
+    voting.setProvider(web3.currentProvider)
+
+    const accounts = await promisify(web3.eth.getAccounts)
+    const defaultAccount = accounts[0]
+
+    const votingInstance = await voting.deployed()
+
+    this.setState({
+      ...this.state,
+      web3,
+      defaultAccount,
+      votingInstance,
     })
-    .catch(() => {
-      console.log('Error finding web3.')
+
+    this.loadProposals()
+  }
+
+  async loadProposals() {
+    const { web3, votingInstance, defaultAccount } = this.state
+
+    console.log(`It's about to load proposals from account ${defaultAccount}`)
+    console.log(`Voting instance address: ${votingInstance.address}`)
+
+    try {
+      const proposalsInBytes32 = await votingInstance.getProposals.call(defaultAccount)
+      const proposals = proposalsInBytes32.map((proposal) => web3.toAscii(proposal))
+      this.setState({
+        ...this.state,
+        proposals,
+      })
+    } catch (error) {
+      console.log(`Error loading proposals: ${error}`)
+    }
+  }
+
+  watchNewProposals() {
+    const { web3, votingInstance } = this.state
+
+    votingInstance.NewProposal().watch((error, result) => {
+      if (error) {
+        console.log(`Nooooo! ${error}`)
+      } else {
+        console.log(`Result ${JSON.stringify(result.args)}`)
+        const proposalInBytes32 = result.args.proposal
+        const proposal = web3.toAscii(proposalInBytes32)
+        this.setState({...this.state, proposals: [...this.state.proposals, proposal]})
+        this.log(`New proposal added: ${proposal}`)
+      }
     })
   }
 
-  instantiateContract() {
-    /*
-     * SMART CONTRACT EXAMPLE
-     *
-     * Normally these functions would be called in the context of a
-     * state management library, but for convenience I've placed them here.
-     */
+  watchNewVotes() {
+    const { web3, votingInstance } = this.state
 
-    const contract = require('truffle-contract')
-    const copaCoin = contract(copaCoinContract)
-    copaCoin.setProvider(this.state.web3.currentProvider)
-
-    // Declaring this for later so we can chain functions on copaCoin.
-    var copaCoinInstance
-
-    // Get accounts.
-    this.state.web3.eth.getAccounts((error, accounts) => {
-      copaCoin.deployed().then((instance) => {
-        copaCoinInstance = instance
-
-        // Stores a given value, 5 by default.
-        //return copaCoinInstance.set(5, {from: accounts[0]})
-      }).then((result) => {
-        // Get the value from the contract to prove it worked.
-        //return copaCoinInstance.get.call(accounts[0])
-      }).then((result) => {
-        // Update state with the result.
-        //return this.setState({ storageValue: result.c[0] })
-      })
+    votingInstance.NewVote().watch((error, result) => {
+      if (error) {
+        console.log(`Nooooo! ${error}`)
+      } else {
+        console.log(`Result ${JSON.stringify(result.args)}`)
+        const { votesCount, index, proposal } = result.args
+        this.log(`${proposal} has ${votesCount} votes`)
+      }
     })
+  }
+
+  log(text) {
+    this.setState({...this.state, logs: [...this.state.logs, text]})
+  }
+
+  onProposalAdded(proposal) {
+    const { votingInstance, defaultAccount } = this.state
+    console.log(`
+    It's about upload a new proposal: ${proposal}.
+    The default account is ${defaultAccount}
+    The voting instance address is ${votingInstance.address}
+    `)
+    votingInstance.addProposal(proposal, { from: defaultAccount })
   }
 
   render() {
     return (
-      <div className="App">
-        <nav className="navbar pure-menu pure-menu-horizontal">
-            <a href="#" className="pure-menu-heading pure-menu-link">Truffle Box</a>
-        </nav>
-
-        <main className="container">
-          <div className="pure-g">
-            <div className="pure-u-1-1">
-              <h1>Good to Go!</h1>
-              <p>Your Truffle Box is installed and ready.</p>
-              <h2>Smart Contract Example</h2>
-              <p>A laburar</p>
-            </div>
-          </div>
-        </main>
+      <div style={styles.main}>
+        <Header/> <hr/>
+        { this.state.errorMessage ? <h3>{this.state.errorMessage}</h3> : <ProposalsList proposals={this.state.proposals} /> }
+        <hr/>
+        <AddProposalForm onProposalAdded={this.onProposalAdded.bind(this)} />
+        <hr/>
+        <LogsList logs={this.state.logs} />
       </div>
-    );
+    )
   }
 }
-
-export default App
