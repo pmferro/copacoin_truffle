@@ -8,6 +8,13 @@ contract Voting is Ownable {
 
     using Utils for Utils;
 
+    //bytes32[] public proposals;
+    uint256[] public votes;
+    address owner;
+
+    event NewProposal(bytes32 proposal);
+    event NewVote(uint256 votesCount, uint256 index, bytes32 proposal);
+
     struct Proposal {
         bytes32 name;
         uint8 votesCount;

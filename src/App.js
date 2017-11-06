@@ -129,6 +129,11 @@ export default class App extends Component {
     votingInstance.addProposal(proposal, { from: defaultAccount })
   }
 
+  onVote(proposal) {
+    const { votingInstance, defaultAccount } = this.state
+    votingInstance.voteProposals({ from: defaultAccount }, [0])
+  }
+
   render() {
     return (
       <div style={styles.main}>
