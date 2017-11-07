@@ -1,0 +1,22 @@
+Ethereum
+
+Cuentas vs UXTOs
+Con saldo
+Con estado
+Con codigo
+Se ejecuta alguna funcion al enviar una transaccion
+
+EVM
+
+Basada en bytecodes
+Accede y actualiza el estado de un contrato
+Usa memoria transitoria
+Usa una pila de valores
+Consume gas por opcode/almacenamiento
+
+Almacenamiento
+
+Clave/valoresSon de 32 bytes cada uno
+Valor asumido es 0x00
+La piola tambien maneja valores de 32 bytes
+
