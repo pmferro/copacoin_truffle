@@ -39,8 +39,8 @@ export default class App extends Component {
 
   componentWillMount() {
     this.initialize()
-      .then(() => { 
-        this.watchNewProposals() 
+      .then(() => {
+        this.watchNewProposals()
         this.watchNewVotes()
       })
   }
@@ -94,7 +94,7 @@ export default class App extends Component {
       } else {
         console.log(`Result ${JSON.stringify(result.args)}`)
         const proposalInBytes32 = result.args.proposal
-        const proposal = web3.toString(proposalInBytes32)
+        const proposal = web3.toAscii(proposalInBytes32).replace(/\u0000/g, '')
         this.setState({...this.state, proposals: [...this.state.proposals, proposal]})
         this.log(`New proposal added: ${proposal}`)
       }
@@ -129,16 +129,16 @@ export default class App extends Component {
     votingInstance.addProposal(proposal, { from: defaultAccount })
   }
 
-  onVote(proposal) {
+  onVote(proposals) {
     const { votingInstance, defaultAccount } = this.state
-    votingInstance.voteProposals({ from: defaultAccount }, [0])
+    votingInstance.voteProposals({ from: defaultAccount }, proposals)
   }
 
   render() {
     return (
       <div style={styles.main}>
         <Header/> <hr/>
-        { this.state.errorMessage ? <h3>{this.state.errorMessage}</h3> : <ProposalsList proposals={this.state.proposals} /> }
+        { this.state.errorMessage ? <h3>{this.state.errorMessage}</h3> : <ProposalsList proposals={this.state.proposals} onVote={this.onVote.bind(this)}/> }
         <hr/>
         <AddProposalForm onProposalAdded={this.onProposalAdded.bind(this)} />
         <hr/>

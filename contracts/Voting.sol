@@ -1,4 +1,4 @@
-pragma solidity ^0.4.4;
+pragma solidity ^0.4.17;
 
 import "../node_modules/zeppelin-solidity/contracts/ownership/Ownable.sol";
 import "./ClassCoin.sol";
@@ -13,7 +13,7 @@ contract Voting is Ownable {
     address owner;
 
     event NewProposal(bytes32 proposal);
-    event NewVote(uint256 votesCount, uint256 index, bytes32 proposal);
+    //event NewVote(uint256[] votesCount, bytes32[] proposal);
 
     struct Proposal {
         bytes32 name;
@@ -44,13 +44,14 @@ contract Voting is Ownable {
 
     function addProposal(bytes32 _proposal) public onlyOwner proposalNotExists(_proposal) {
         proposals.push(Proposal({name: _proposal, votesCount: 0}));
+        NewProposal(_proposal);
     }
 
     function addVoter(address _voter) public onlyOwner {
       coinContract.mintOne(_voter);
     }
 
-    function bytes32ToString(bytes32 x) public returns (string) {
+    function bytes32ToString(bytes32 x) public pure returns (string) {
         bytes memory bytesString = new bytes(32);
         uint charCount = 0;
         for (uint j = 0; j < 32; j++) {
@@ -92,11 +93,17 @@ contract Voting is Ownable {
         require(voters[_voter] == false);
         require(coinContract.balanceOf(_voter) > 0);
         require(coinContract.spend(1));
+
+        //uint[] memory counts = new uint[](_indexes.length);
+        //bytes32[] memory names = new bytes32[](_indexes.length);
         for (uint i = 0; i < _indexes.length; i++) {
             uint index = _indexes[i];
             updateProposal(index);
+            //counts[i] = getProposalVotesCount(index);
+            //names[i] = proposals[index].name;
         }
         voters[_voter] = true;
+        //NewVote(counts, names);
     }
 
 }
